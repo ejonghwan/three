@@ -1,6 +1,6 @@
 import * as Three from 'three'
 
-// 애니메이션 추가
+// 여러개 만들기 안개
 
 
 
@@ -19,6 +19,7 @@ export default () => {
 
     // 씬
     const scene = new Three.Scene();
+    scene.fog = new Three.Fog('black', 3, 7)
   
 
 
@@ -31,6 +32,7 @@ export default () => {
         1000
     )
     camera.position.z = 5
+    camera.position.y = 1
 
     scene.add(camera)
 
@@ -42,8 +44,8 @@ export default () => {
         color: '#9b7fe6'
     });
 
-    const mesh = new Three.Mesh(geometry, material)
-    scene.add(mesh)
+    // const mesh = new Three.Mesh(geometry, material)
+    // scene.add(mesh)
 
 
 
@@ -51,39 +53,60 @@ export default () => {
     // 빛
     const light = new Three.DirectionalLight('#fff', 2.3) //color, 빛 세기
     scene.add(light)
-    light.position.x = 2
-    light.position.y = 1
-    light.position.z = 4
+    light.position.x = 1
+    light.position.y = 2
+    light.position.z = 7
 
     
-    const clock = new Three.Clock()
+
+    const meshs = []
+    let mesh;
+
+    for(let i = 0; i < 3; i++){
+        mesh = new Three.Mesh(geometry, material)
+        mesh.position.x = Math.random() * 5 - 2.5
+        mesh.position.z = Math.random() * 5 - 2.5
+        scene.add(mesh);
+        meshs.push(mesh)
+        // meshs[i]
+    }
+
+    // console.log(meshs)
+    
 
 
+    let oldTime = Date.now()
     // 애니메이션
     const draw = () => {
 
-        
+        const newTime = Date.now(); 
+        const time = newTime - oldTime; 
+        oldTime = newTime
 
-        
+        // meshs.forEach(item => {
+        //     item.rotation.y +=  time * 0.001 ;
+        // });
 
-        // 화면에 그리기 
-        mesh.position.x += 0.01
-        //   console.log(mesh.position.x)
-        if(mesh.position.x >= 2) {
-            mesh.position.x = 2
+        for(let i = 0; i < meshs.length; i++) {
+            // 화면에 그리기 
+            // mesh[i].position.x += 0.01
+            // if(mesh[i].position.x >= 2) {
+            //     mesh[i].position.x = 2
+            // }
+
+            // console.log(1)
+            
+            // console.log(Date.now())
+
+            meshs[i].rotation.x += time * 0.001 ;
+
+            meshs[i].rotation.y += 0.003
+            meshs[i].rotation.z += 0.005
+            
         }
 
-        // 이렇게 하면 모니터마다 주사율이 달라서 어떤 곳에선 1초에 60번, 노트북에선 30번 ...다 다를 수 있다
-        // mesh.rotation.x += Three.MathUtils.degToRad(.1)
-
-
-        // 그럴때 clock을 이용해서 절대 시간을 대입하면 어떤 환경에서든 같은 동작을 구현할 수 있다
-        const time = clock.getElapsedTime()
-        mesh.rotation.x = .5 * time ;
-
-        mesh.rotation.y += 0.003
-        mesh.rotation.z += 0.005
-        renderer.render(scene, camera)        
+        
+        renderer.render(scene, camera)   
         //   window.requestAnimationFrame(draw)
         renderer.setAnimationLoop(draw)
     }
