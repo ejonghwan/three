@@ -1,9 +1,10 @@
 import * as THREE from 'three';
-import { DragControls } from 'three/examples/jsm/controls/DragControls'
+import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
+
+import KeyController from './KeyController.js'
 
 
-
-// ----- 주제: DragControls
+// ----- 주제: mind craft move
 
 export default function example() {
 	// Renderer
@@ -77,12 +78,27 @@ export default function example() {
 
 
 
-	const controls = new DragControls(meshs, camera, renderer.domElement);
-    console.dir(controls)
+	const controls = new PointerLockControls(camera, renderer.domElement);
+    // console.dir(controls)
 
-    controls.addEventListener('dragstart', e => console.log(e.object.name))
+    // controls.addEventListener('dragstart', e => console.log(e.object.name))
   
+    window.addEventListener('click', e => {
+        controls.lock();
+    })
 
+
+	const keyEvt = new KeyController()
+	console.log(keyEvt)	
+
+	function walk() {
+		// console.log(11)
+		if(keyEvt.keys['KeyW'] || keyEvt.keys['ArrowUp']) return controls.moveForward(0.02) 
+		if(keyEvt.keys['KeyS'] || keyEvt.keys['ArrowDown']) return controls.moveForward(-0.02)
+		if(keyEvt.keys['KeyA'] || keyEvt.keys['ArrowLeft']) return controls.moveRight(-0.02)
+		if(keyEvt.keys['KeyD'] || keyEvt.keys['ArrowRight']) return controls.moveRight(0.02)
+		
+	}
 
 
 	// 그리기
@@ -91,6 +107,7 @@ export default function example() {
 	function draw() {
 		const delta = clock.getDelta();
 
+		walk();
 		
 		// controls.update(delta);
 

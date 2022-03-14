@@ -1,9 +1,7 @@
 import * as THREE from 'three';
-import { DragControls } from 'three/examples/jsm/controls/DragControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
-
-
-// ----- 주제: DragControls
+// ----- 주제: MeshBasicMaterial
 
 export default function example() {
 	// Renderer
@@ -14,11 +12,6 @@ export default function example() {
 	});
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
-
-	
-
-
-	
 
 	// Scene
 	const scene = new THREE.Scene();
@@ -31,10 +24,9 @@ export default function example() {
 		1000
 	);
 	camera.position.y = 1.5;
-	camera.position.z = 10;
+	camera.position.z = 4;
 	scene.add(camera);
 
-				
 	// Light
 	const ambientLight = new THREE.AmbientLight('white', 0.5);
 	scene.add(ambientLight);
@@ -45,54 +37,21 @@ export default function example() {
 	scene.add(directionalLight);
 
 	// Controls
+	const controls = new OrbitControls(camera, renderer.domElement)
 
 	// Mesh
 	const geometry = new THREE.BoxGeometry(1, 1, 1);
-	let mesh;
-	let material;
-    let meshs = []
-
-	for(let i = 0; i < 20; i++) {
-		material = new THREE.MeshStandardMaterial({
-			color: `rgb(${Math.round( 200 + Math.random() * 55 )}, ${Math.round( 100 + Math.random() * 155 )}, ${Math.round( 100 + Math.random() * 155 )} )`
-		})
-
-		mesh = new THREE.Mesh(geometry, material) 
-		mesh.position.x = Math.random() * 6 - 3
-		mesh.position.y = Math.random() * 6 - 3
-		mesh.position.z = Math.random() * 6 - 3
-
-
-        mesh.name = `box-${i}`
-        meshs[i] = mesh
-
-		scene.add(mesh)
-	}
-	
+	const material = new THREE.MeshBasicMaterial({
+		color: 'seagreen'
+	});
+	const mesh = new THREE.Mesh(geometry, material);
 	scene.add(mesh);
-    console.log(meshs)
-
-
-	
-
-
-
-	const controls = new DragControls(meshs, camera, renderer.domElement);
-    console.dir(controls)
-
-    controls.addEventListener('dragstart', e => console.log(e.object.name))
-  
-
-
 
 	// 그리기
 	const clock = new THREE.Clock();
 
 	function draw() {
 		const delta = clock.getDelta();
-
-		
-		// controls.update(delta);
 
 		renderer.render(scene, camera);
 		renderer.setAnimationLoop(draw);
