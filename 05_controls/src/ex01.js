@@ -1,7 +1,6 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
-// ----- 주제: Geometry 기본
+// ----- 주제: OrbitControls
 
 export default function example() {
 	// Renderer
@@ -23,11 +22,9 @@ export default function example() {
 		0.1,
 		1000
 	);
+	camera.position.y = 1.5;
 	camera.position.z = 4;
 	scene.add(camera);
-
-
-
 
 	// Light
 	const ambientLight = new THREE.AmbientLight('white', 0.5);
@@ -38,17 +35,12 @@ export default function example() {
 	directionalLight.position.z = 2;
 	scene.add(directionalLight);
 
-
-	const controls = new OrbitControls(camera, renderer.domElement);
-
+	// Controls
 
 	// Mesh
-	const geometry = new THREE.BoxGeometry(1, 1, 1, 5, 5);
+	const geometry = new THREE.BoxGeometry(1, 1, 1);
 	const material = new THREE.MeshStandardMaterial({
-		color: 'hotpink',
-		wireframe: true,
-		side: THREE.DoubleSide,
-		
+		color: 'seagreen'
 	});
 	const mesh = new THREE.Mesh(geometry, material);
 	scene.add(mesh);
