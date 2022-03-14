@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 
-// ----- 주제: OrbitControls
+// ----- 주제: TrackballControls
 
 export default function example() {
 	// Renderer
@@ -69,16 +69,7 @@ export default function example() {
 
 
 
-	const controls = new OrbitControls(camera, renderer.domElement);
-	controls.enableDamping = true
-	// controls.enableZoom = false
-	// controls.maxDistance = 5
-	// controls.minDistance = 2
-	// controls.maxPolarAngle = Math.PI / 2
-	// controls.maxAzimuthAngle = Math.PI * 2
-	// controls.target.set(5, 5, 5) //카메라를 돌리는 중심점 
-	// controls.autoRotate = true
-	// controls.autoRotateSpeed = 5
+	const controls = new TrackballControls(camera, renderer.domElement);
 	
 
 

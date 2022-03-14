@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { DragControls } from 'three/examples/jsm/controls/DragControls'
 
-// ----- 주제: OrbitControls
+// ----- 주제: DragControls
 
 export default function example() {
 	// Renderer
@@ -48,41 +48,37 @@ export default function example() {
 	const geometry = new THREE.BoxGeometry(1, 1, 1);
 	let mesh;
 	let material;
+    let meshs = []
 
 	for(let i = 0; i < 20; i++) {
 		material = new THREE.MeshStandardMaterial({
 			color: `rgb(${Math.round( 200 + Math.random() * 55 )}, ${Math.round( 100 + Math.random() * 155 )}, ${Math.round( 100 + Math.random() * 155 )} )`
 		})
 
-		mesh = new THREE.Mesh(geometry, material)
+		mesh = new THREE.Mesh(geometry, material) 
 		mesh.position.x = Math.random() * 6 - 3
 		mesh.position.y = Math.random() * 6 - 3
 		mesh.position.z = Math.random() * 6 - 3
 
 
+        mesh.name = `box-${i}`
+        meshs[i] = mesh
+
 		scene.add(mesh)
 	}
 	
 	scene.add(mesh);
+    console.log(meshs)
 
 
 
 
 
-	const controls = new OrbitControls(camera, renderer.domElement);
-	controls.enableDamping = true
-	// controls.enableZoom = false
-	// controls.maxDistance = 5
-	// controls.minDistance = 2
-	// controls.maxPolarAngle = Math.PI / 2
-	// controls.maxAzimuthAngle = Math.PI * 2
-	// controls.target.set(5, 5, 5) //카메라를 돌리는 중심점 
-	// controls.autoRotate = true
-	// controls.autoRotateSpeed = 5
-	
+	const controls = new DragControls(meshs, camera, renderer.domElement);
+    console.dir(controls)
 
-
-
+    controls.addEventListener('dragstart', e => console.log(e.object.name))
+  
 
 	// 그리기
 	const clock = new THREE.Clock();
@@ -90,7 +86,7 @@ export default function example() {
 	function draw() {
 		const delta = clock.getDelta();
 
-		controls.update();
+		// controls.update(delta);
 
 		renderer.render(scene, camera);
 		renderer.setAnimationLoop(draw);

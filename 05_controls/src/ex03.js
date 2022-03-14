@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { FlyControls } from 'three/examples/jsm/controls/FlyControls'
 
-// ----- 주제: OrbitControls
+// ----- 주제: FlyControls
 
 export default function example() {
 	// Renderer
@@ -69,17 +69,10 @@ export default function example() {
 
 
 
-	const controls = new OrbitControls(camera, renderer.domElement);
-	controls.enableDamping = true
-	// controls.enableZoom = false
-	// controls.maxDistance = 5
-	// controls.minDistance = 2
-	// controls.maxPolarAngle = Math.PI / 2
-	// controls.maxAzimuthAngle = Math.PI * 2
-	// controls.target.set(5, 5, 5) //카메라를 돌리는 중심점 
-	// controls.autoRotate = true
-	// controls.autoRotateSpeed = 5
-	
+	const controls = new FlyControls(camera, renderer.domElement);
+	controls.rollSpeed = 0.05; //default 0.005
+    controls.movementSpeed = 3;
+    controls.dragToLook = true
 
 
 
@@ -90,7 +83,7 @@ export default function example() {
 	function draw() {
 		const delta = clock.getDelta();
 
-		controls.update();
+		controls.update(delta);
 
 		renderer.render(scene, camera);
 		renderer.setAnimationLoop(draw);
