@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import dat from 'dat.gui';
 
-// ----- 주제: light 기본
+// ----- 주제: 스포트 라이트
 
 export default function example() {
 	// Renderer
@@ -35,25 +35,26 @@ export default function example() {
 
 	// Light
 	const ambLight = new THREE.AmbientLight('#fff', .5) //기본으로 깔아주고 다른조명 씀 
-	const directionLight = new THREE.DirectionalLight('red', .5)
-	scene.add(ambLight, directionLight) 
-	directionLight.position.y = 3
+	// const light = new THREE.DirectionalLight('red', .5)
+	const light = new THREE.SpotLight('red', .5, 100, Math.PI * 0.25)
+	scene.add(ambLight, light) 
+	light.position.y = 3
 
 
     //Light helper
-    const LightHelper = new THREE.DirectionalLightHelper(directionLight, 1)
+    const LightHelper = new THREE.SpotLightHelper(light, 1)
     scene.add(LightHelper)
     
 
 	// 그림자 설정
-	directionLight.castShadow = true;
-	directionLight.shadow.mapSize.width = 2024;
-	directionLight.shadow.mapSize.height = 2024;
-	// directionLight.shadow.radius = 10
+	light.castShadow = true;
+	light.shadow.mapSize.width = 2024;
+	light.shadow.mapSize.height = 2024;
+	// light.shadow.radius = 10
 	
 	// 최적화 그림자 적용되는 범위 
-	directionLight.shadow.camera.near = 1
-	directionLight.shadow.camera.far = 5
+	light.shadow.camera.near = 1
+	light.shadow.camera.far = 5
 
     
 	
@@ -135,8 +136,8 @@ export default function example() {
         const il = clock.getElapsedTime();
 
 
-        directionLight.position.x = Math.cos(il) * 3
-        directionLight.position.z = Math.sin(il) * 3
+        light.position.x = Math.cos(il) * 3
+        light.position.z = Math.sin(il) * 3
 
 
 
