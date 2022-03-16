@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-// ----- 주제: 레이캐스터 광선 구현
+// ----- 주제: glb 파일 불러오기
 
 export default function example() {
 	// Renderer
@@ -25,7 +25,6 @@ export default function example() {
 	);
 	camera.position.y = 1.5;
 	camera.position.z = 4;
-	camera.position.x = 5;
 	scene.add(camera);
 
 	// Light
@@ -38,35 +37,9 @@ export default function example() {
 	scene.add(directionalLight);
 
 	// Controls
-	const controls = new OrbitControls(camera, renderer.domElement)
+	const controls = new OrbitControls(camera, renderer.domElement);
 
-	//Mesh
-	const lineMaterial = new THREE.LineBasicMaterial({ color: 'yellow' })
-	const points = []; 
-	points.push(new THREE.Vector3(0, 0, 100))
-	points.push(new THREE.Vector3(0, 0, -100))
-	const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
-
-	const guide = new THREE.Line(lineGeometry, lineMaterial)
-	scene.add(guide)
-
-
-	const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-	const boxMaterial = new THREE.MeshStandardMaterial({ color: '#fff' })
-	const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-	scene.add(boxMesh)
-
-	
-	const torusGeometry = new THREE.TorusGeometry(1.5, .5, 20, 50);
-	const torusMaterial = new THREE.MeshStandardMaterial({ color: '#555' });
-	const torusMesh = new THREE.Mesh(torusGeometry, torusMaterial)
-	scene.add(torusMesh)
-
-
-
-
-	const meshs = [boxMesh, torusMesh];
-
+	// gltf loader
 
 	// 그리기
 	const clock = new THREE.Clock();
