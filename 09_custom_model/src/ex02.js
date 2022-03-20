@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
-// ----- 주제: glb 파일 불러오기
+// ----- 주제: 애니매이션 줘보기 
 
 export default function example() {
 	// Renderer
@@ -42,6 +42,7 @@ export default function example() {
 
 	// gltf loader
     const gltfLoader = new GLTFLoader();
+    let mixer; //애니메이션 믹서 draw에서 사용
 	gltfLoader.load(
 		'/models/ilbuni.glb',
 		gltf => {
@@ -49,6 +50,17 @@ export default function example() {
 			console.log(gltf)
 			const cMesh = gltf.scene.children[0] //mesh
 			scene.add(cMesh)
+
+            mixer = new THREE.AnimationMixer(cMesh)
+            const actions = [];
+            actions[0] = mixer.clipAction(gltf.animations[0])
+            actions[1] = mixer.clipAction(gltf.animations[1])
+            actions[0].play();
+            actions[1].play();
+
+            
+            actions[1].repetitions = 2 //반복횟수 지정 
+            actions[1].clampWhenFinished = true // 끝날때 그 위치로 스톱            
 		}
 	)
 
@@ -59,6 +71,8 @@ export default function example() {
 
 	function draw() {
 		const delta = clock.getDelta();
+        
+        if(mixer) mixer.update(delta)
 
 		renderer.render(scene, camera);
 		renderer.setAnimationLoop(draw);

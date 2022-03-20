@@ -1,8 +1,10 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
-// ----- 주제: glb 파일 불러오기
+// ----- 주제: cannon.js 기본 세팅
+
+// cannon.js 문서
+// http://schteppe.github.io/cannon.js/docs/
+// 주의! https 아니고 http
 
 export default function example() {
 	// Renderer
@@ -38,24 +40,17 @@ export default function example() {
 	scene.add(directionalLight);
 
 	// Controls
-	const controls = new OrbitControls(camera, renderer.domElement);
 
-	// gltf loader
-    const gltfLoader = new GLTFLoader();
-	gltfLoader.load(
-		'/models/ilbuni.glb',
-		gltf => {
-			//load가 끝나면 인자로 들어옴
-			console.log(gltf)
-			const cMesh = gltf.scene.children[0] //mesh
-			scene.add(cMesh)
-		}
-	)
+	// Mesh
+	const geometry = new THREE.BoxGeometry(1, 1, 1);
+	const material = new THREE.MeshStandardMaterial({
+		color: 'seagreen'
+	});
+	const mesh = new THREE.Mesh(geometry, material);
+	scene.add(mesh);
 
-		
 	// 그리기
 	const clock = new THREE.Clock();
-
 
 	function draw() {
 		const delta = clock.getDelta();
